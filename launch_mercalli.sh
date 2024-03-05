@@ -18,7 +18,7 @@ start_index=0
 end_index=99
 
 if [ $end_index -gt $ncellX  ]; then
-  #echo $start_index $end_index
+
   sed -i s/$start_index-$end_index/$start_index-$ncellX/ test_launch.sh
   qsub -W block=true test_launch.sh  &
 else
