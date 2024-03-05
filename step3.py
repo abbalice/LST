@@ -96,8 +96,7 @@ for fid in files:
        interp_values = interp_values((XX, YY)).T
        # Superposition
        filtered_elev[new_posX:new_posX+round((8*H[i,j] + 2*max(a,b))/dx), new_posY:new_posY+round((8*H[i,j] + 2*max(a,b))/dy)] += B0[i,j]*(interp_values)
-    #elif H[i,j]>0 and (H[i+1,j]<0 or H[i,j+1]<0 or H[i+1, j+1]<0):
-    #   filtered_elev[new_pos-n_cell:new_pos + int((8*H[i] + 2*a)/dx)+n_cell, new_posY-n_cell:new_posY+int((8*H[i,j] + 2*max(a,b))/dy)+n_cell] = B0[i,j]
+
 end_time = time.time()
 print('Execution time {} = {}[min.]'.format(event_loc, np.round((end_time-start_time)/60, 2)))
 # Defining the directory where to store the local database and plots
