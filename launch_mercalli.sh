@@ -27,7 +27,7 @@ fi
 
 while [ $end_index -lt $ncellX ]
 do
-  #echo $start_index $end_index
+
   sed -i s/$start_index-$end_index/$(( $start_index + 100 ))-$(( $end_index + 100 ))/ test_launch.sh
   start_index=$(( $start_index + 100 ))
   end_index=$(( $end_index + 100 ))
