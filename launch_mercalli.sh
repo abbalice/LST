@@ -12,7 +12,7 @@ ncellY=$(echo $inpjson | python3 -c "import sys, json; obj=json.load(sys.stdin);
 echo $ncellX $ncellY
 
 sed -i s/EVENT_LOC/$event_loc/ test_launch.sh
-#sed -i s/NCELLY/$ncellY/ test_launch.sh
+sed -i s/NCELLY/$ncellY/ test_launch.sh
 
 start_index=0
 end_index=99
@@ -45,7 +45,7 @@ fi
 
 sed -i s/$start_index-$ncellX/0-99/ test_launch.sh
 sed -i s/$event_loc/EVENT_LOC/ test_launch.sh
-#sed -i s/$ncellY/NCELLY/ test_launch.sh
+sed -i s/$ncellY/NCELLY/ test_launch.sh
 
 wait
 
