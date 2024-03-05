@@ -23,7 +23,13 @@ from skimage.measure import block_reduce
 from scipy.interpolate import interpn, RegularGridInterpolator
 warnings.filterwarnings("ignore")
 
+##########################################################################################################
+# Conversion to Cartesian coordinates
 def cartesian_toUTM(*args):
+  #=======================================================================================================
+  # This function has been adapted from the Matlab version implemented by François Beauducel
+  # and available at the link https://it.mathworks.com/matlabcentral/fileexchange/45699-ll2utm-and-utm2ll
+  #=======================================================================================================
   # Input arguments
   varargin = args
   nargin = len(varargin)
@@ -126,7 +132,8 @@ def coef(e,m):
   for i in range(len(c0)):
       c[i] = np.polyval(c0[i,:],e)
   return c
-
+########################################################################################
+# Reading ".xyz" files 
 def read_XYZ(filename):
   data = pd.read_csv(filename, engine = 'python', sep = '\s+', header = None)
   x = data.loc[:,0].to_numpy()
@@ -134,24 +141,6 @@ def read_XYZ(filename):
   z = data.loc[:,2].to_numpy()
   return x, y, z
   
-
-#def converter_fromXYZ(filedata):
-   # INPUT
-   # filedata = file name (e.g. 'filename.xyz')
-   # OUTPUT
-   # lat = array of latitude values
-   # lon = array of longitude values
-   # out = quantity we are interested in (e.g. residual bottom deformation, bathymetry..)
-#   data = pd.read_csv(filedata, engine='python', sep='\s+', header=None)
-#   x = data.loc[:, 0].to_numpy()
-#   y = data.loc[:, 1].to_numpy()
-#   lon, ix_lon = np.unique(data.loc[:, 0].to_numpy(), return_index=True)
-#   lat, ix_lat = np.unique(data.loc[:, 1].to_numpy(), return_index=True)
-#   z = data.loc[:, 2].to_numpy()
-#   [X, Y] = np.meshgrid(lon, np.sort(lat)[::-1])
-#   out = np.reshape(z, X.shape)
-#   return np.sort(lat)[::-1], lon, out
-
 #===================================================================
 # Spatial domain
 #===================================================================
@@ -235,10 +224,7 @@ def gauss_2d(La, Lb, Lc, Ld, K, xp, yp, a, b, H):
     x_i = [-0.577350269189626, -0.577350269189626, 0.577350269189626,0.577350269189626]
     y_i = [-0.577350269189626, 0.577350269189626, -0.577350269189626, 0.577350269189626]
     w_i = [1, 1, 1, 1]
-    # Nine points
-    #x_i = [-0.7745966692414834, -0.7745966692414834, -0.7745966692414834, 0, 0, 0, 0.7745966692414834, 0.7745966692414834, 0.7745966692414834]
-    #y_i = [-0.7745966692414834, 0, 0.7745966692414834, -0.7745966692414834, 0, 0.7745966692414834, -0.7745966692414834, 0, 0.7745966692414834]
-    #w_i = [0.5555555555555556, 0.8888888888888888,  0.5555555555555556, 0.5555555555555556, 0.8888888888888888,  0.5555555555555556, 0.5555555555555556, 0.8888888888888888,  0.5555555555555556]
+  
     gauss_point = 0
     for j in range(len(w_i)):
          gauss_point += half1*half2*(w_i[j] * integrand_2d(half1*x_i[j] + mid1, half2*y_i[j] + mid2, K, xp, yp, a, b, H))
@@ -331,7 +317,6 @@ def integration_2d(a, b, x, y,  B0, H):
 #==================================================================================
 # 2d Superposition
 #==================================================================================
-#@ray.remote(num_cpus=32)
 
 def superposition_2d(spatialX_domain, spatialY_domain,  dx, dy,  ncellX, ncellY, n_cell,  a, b, B0, H):
     #---------------------------------------------------------------
@@ -366,20 +351,24 @@ def superposition_2d(spatialX_domain, spatialY_domain,  dx, dy,  ncellX, ncellY,
             print(i,j)
             if B0[i,j]>= 0.1*B0.max() or B0[i,j]<=0.1*B0.min() and H[i,j]>1e3:#0.25*max(a,b):
                 # Extended local domain for the cell (symmetric, centered in zero)
+            
                 xcell = domain(-4*H[i,j] - max(a,b), 4*H[i,j] + max(a,b), dx)
                 ycell = domain(-4*H[i,j] - max(a,b), 4*H[i,j] + max(a,b), dy)
                 # Shifting the extended local domain to be not centered in zero
+              
                 x_shift = spatialX_domain[n_cell*i] 
                 y_shift = spatialY_domain[n_cell*j] 
                 xcell_shifted = xcell + x_shift
                 ycell_shifted = ycell + y_shift
                 # Finding the correct position in the total domain
+              
                 new_posX = n_cell*(i) - int(4*H[i,j]/dx)
                 new_posY = n_cell*(j) - int(4*H[i,j]/dy)
                 # Interpolation
+              
                 iX = spatialX_domain[new_posX - n_cell:new_posX + int((8*H[i,j] + 2*max(a,b))/dx) + n_cell]
                 iY = spatialY_domain[new_posY - n_cell:new_posY + int((8*H[i,j] + 2*max(a,b))/dy) + n_cell]
-                #print(iX, iY)
+              
                 if len(iX)>1 and len(iY)>1:
                     print(xcell.shape)
                     # Integral solution in the local extended domain
@@ -395,25 +384,11 @@ def superposition_2d(spatialX_domain, spatialY_domain,  dx, dy,  ncellX, ncellY,
                     XX, YY = np.meshgrid(iX, iY)
                     interp_values = interp_values((XX, YY)).T
 
-                    #from mpl_toolkits import mplot3d
-
-                    #fig2 = plt.figure(figsize=(15,10))
-                    #ax2 = fig2.add_subplot(111, projection='3d')
-
-                    #[X1, Y1] = meshgrid(iX, iY)
-
-                    #ax2.plot_surface(X1.T, Y1.T, interp_values, color='tab:red')
-                    #ax2.set_xlabel('x [m]')
-                    #ax2.set_ylabel('y [m]')
-                    #ax2.set_zlabel(r'$\xi_0(x,y)$ [m]')
-                    #plt.show()
 
                     # Final solution
-                    #print(H.shape, filtered_elev.shape, interp_values.shape)
                     filtered_elev[new_posX-n_cell:new_posX+int((8*H[i,j]+2*max(a,b))/dx)+n_cell, new_posY-n_cell:new_posY+int((8*H[i,j]+2*max(a,b))/dy)+n_cell] += interp_values
 
 
                 else:
                     pass
-                #elev_cell #interp_values
     return filtered_elev
