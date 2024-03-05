@@ -51,8 +51,8 @@ except:
 # The coseismic deformation is assumed scaled to one within each cell
 B0 = 1
 
-# Starting computation :  shallow depths will be avoided
-if H[i,j]>0: #0.25*max(a,b):
+# Starting computation :  regions of topographic elevations will be avoided
+if H[i,j]>0: 
   # Extended local domain for the cell (symmetric, centered in zero)
   xcell = np.arange(-4*H[i,j] - max(a,b), 4*H[i,j] + max(a,b) + dx, dx)
   ycell = np.arange(-4*H[i,j] - max(a,b), 4*H[i,j] + max(a,b) + dy, dy)
