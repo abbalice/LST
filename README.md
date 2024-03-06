@@ -86,6 +86,19 @@ Three more subfolders are also provided, for reproducibility:
 * **initial_conditions**, where all the outputs file from 2D-LST are stored, including the initial condition as netCDF file and a plot for each model considered;
 * **kajiura_ic**, where the same files provided in **coseismic_deformation** have been filtered according to Kajiura (1963).
 
+## References
+
+Okada, Y.: Surface deformation due to shear and tensile faults in a half-space, Bulletin of the Seismological Society of America, 75, 1135–1154, https://doi.org/10.1785/BSSA0750041135, 1985.
+
+Tanioka, Y. and Satake, K.: Tsunami generation by horizontal displacement of ocean bottom, Geophysical Research Letters, 23, 861–864, https://doi.org/https://doi.org/10.1029/96GL00736, 1996.
+
+Tanioka, Y. and Seno, T.: Sediment effect on tsunami generation of the 1896 Sanriku Tsunami Earthquake, Geophysical Research Letters, 28, 3389–3392, https://doi.org/https://doi.org/10.1029/2001GL013149, 2001.
+
+Lay, T., Kanamori, H., Ammon, C. J., Hutko, A. R., Furlong, K., and Rivera, L.: The 2006–2007 Kuril Islands great earthquake sequence, Journal of Geophysical Research: Solid Earth, 114, https://doi.org/https://doi.org/10.1029/2008JB006280, 2009.
+
+Becker, J., Sandwell, D., Smith, W., Braud, J., Binder, B., Depner, J., Fabre, D., Factor, J., Ingalls, S., Kim, S. H., Ladner, R., and Marks, K.: Global bathymetry and elevation data at 30 arc seconds resolution: SRTM30_PLUS, Marine Geodesy − MAR GEODESY, 32, 355 −371, https://doi.org/10.1080/01490410903297766, 2009.
+
+Nosov, M. and Kolesov, S.: Optimal Initial Conditions for Simulation of Seismotectonic Tsunamis, Pure and Applied Geophysics, 168, 1223–1237, https://doi.org/10.1007/s00024-010-0226-6, 2011.
 
 
 
