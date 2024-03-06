@@ -4,7 +4,7 @@ Repository for the paper: "Modeling tsunami initial conditions due to rapid co-s
 
 How to cite: "Alice Abbate. (2024). abbalice/LST: LST (v0.0). Zenodo. https://doi.org/10.5281/zenodo.10786626".
 
-Acknowledgements: José M. González Vida, Manuel J. Castro Díaz and Stefano Lorito contributed to the realization of this tool.
+Acknowledgements: José M. González Vida, Manuel J. Castro Díaz, Stefano Lorito and Andrey Babeyko contributed to the realization of this tool.
 
 ## 2D-LST
 
