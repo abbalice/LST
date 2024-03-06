@@ -7,8 +7,8 @@ The tool consists of three steps, detailed in the Supplementary Materials.
 A working directory must be created, where the following folders and files are stored:
 
 1. *EVENT_LOC* folder, containing the input data for the algorithm (coseismic deformation and sea-depth), organized in separated sub-folders. Specifically:
-   (a) The folder *bathymetry* contains an *".xyz"* file for the sea-depth values in the region;
-   (b) The folder *coseismic_deformation* contains sub-folders, each named *COMPONENT*, according to the specific component for the seafloor deformation. Within each of them, a single *".xyz"* file is stored, which is the result of the Okada (1985) algorithm.
+   - The folder *bathymetry* contains an *".xyz"* file for the sea-depth values in the region;
+   - The folder *coseismic_deformation* contains sub-folders, each named *COMPONENT*, according to the specific component for the seafloor deformation. Within each of them, a single *".xyz"* file is stored, which is the result of the Okada (1985) algorithm.
 2. The script *Library_2d.py*, where all the functions needed are written   
 3. The script *step1.py*, that will create a subfolder *outputs_step1* in *EVENT_LOC*
 4. The script *step2.py*, that will create the local database "database2_<EVENT_LOC>" in the working directory
