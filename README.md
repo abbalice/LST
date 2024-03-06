@@ -2,7 +2,9 @@
 
 Repository for the paper: "Modeling tsunami initial conditions due to rapid co-seismic sea floor displacement: efficient numerical integration and a tool to build unit source databases".
 
-How to cite: "Alice Abbate. (2024). abbalice/LST: LST (v0.0). Zenodo. https://doi.org/10.5281/zenodo.10786626"
+How to cite: "Alice Abbate. (2024). abbalice/LST: LST (v0.0). Zenodo. https://doi.org/10.5281/zenodo.10786626".
+
+Acknowledgements: José M. González Vida, Manuel J. Castro Díaz and Stefano Lorito contributed to the realization of this tool.
 
 ## 2D-LST
 
