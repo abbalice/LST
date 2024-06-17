@@ -42,7 +42,7 @@ dy = data['dy']
 
 
 # Defining the directory where to store the local database
-outDir = 'database2_{}/Cell_{}_{}'.format(event_loc, i, j)
+outDir = 'database_{}/Cell_{}_{}'.format(event_loc, i, j)
 try:
   os.makedirs(outDir)
 except:
@@ -57,7 +57,7 @@ if H[i,j]>0:
   xcell = np.arange(-4*H[i,j] - max(a,b), 4*H[i,j] + max(a,b) + dx, dx)
   ycell = np.arange(-4*H[i,j] - max(a,b), 4*H[i,j] + max(a,b) + dy, dy)
   # Evaluation of the integral within the cell c_ij
-  elev_cell, _ = integration_2d(a, b, xcell, ycell, B0, H[i, j])
+  elev_cell = integration_2d(a, b, xcell, ycell, B0, H[i, j])
   # Store result within c_ij in a netcdf file
   ncfile = Dataset(os.path.join(outDir, 'cell_{}_{}.nc'.format(i, j)),mode='w',format='NETCDF4')
   ncfile.title='LSD'
