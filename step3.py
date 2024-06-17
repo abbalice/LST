@@ -28,7 +28,7 @@ workdir, event_loc, component = from_local_parser()
 # Specify paths for retrieving the cosesmic deformation and the database of unit cells
 
 pathDef = glob.glob(os.path.join(workdir, event_loc, 'coseismic_deformation', component, "*.xyz"))[0]
-pathCells = os.path.join(workdir, 'database2_{}'.format(event_loc))
+pathCells = os.path.join(workdir, 'database_{}'.format(event_loc))
 
 # Retrieve rbd (Residual Bottom Deformation) and convert it to a matrix
 lon, lat, rbd = read_XYZ(pathDef)
@@ -37,11 +37,6 @@ lat_unique = np.sort(np.unique(lat))[::-1]
 
 [X, Y] = np.meshgrid(lon_unique, lat_unique)
 B0 = np.reshape(rbd, X.shape) 
-
-plt.figure()
-plt.contourf(lon_unique,lat_unique,B0, cmap='coolwarm')
-plt.colorbar()
-plt.show()
 
 # Retrieve corrected bathymetric data and model set-up
 inpDir = os.path.join(workdir, event_loc, 'outputs_step1/')
