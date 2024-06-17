@@ -1,3 +1,4 @@
+from numba import njit, jit
 from numpy import *
 from scipy import interpolate
 import numpy as np
@@ -144,7 +145,7 @@ def read_XYZ(filename):
 #===================================================================
 # Spatial domain
 #===================================================================
-
+@njit
 def domain(left_point, right_point, step_grid):
     #---------------------------------------------------------------
     # This function will compute a spatial 
@@ -163,7 +164,7 @@ def domain(left_point, right_point, step_grid):
 #==================================================================
 # 2d Integrand function
 #==================================================================
-
+@njit
 def integrand_2d(m, n, K, xp, yp, a, b, H):
     #--------------------------------------------------------------
     # This function defines the 2d integrand function as in
@@ -190,7 +191,7 @@ def integrand_2d(m, n, K, xp, yp, a, b, H):
 #===================================================================
 # Legendre-Gauss adaptive quadrature evaluated at one point 
 #===================================================================
-
+@njit
 def gauss_2d(La, Lb, Lc, Ld, K, xp, yp, a, b, H):
     #---------------------------------------------------------------
     # This function will evaluate the 2d composite formula for the
@@ -214,8 +215,6 @@ def gauss_2d(La, Lb, Lc, Ld, K, xp, yp, a, b, H):
     # Change of variables (the support must be [-1,1]x[-1,1])
     half1 = (Lb-La)/2
     mid1 = (La+Lb)/2
-    #half2 = (Ld-Lc)/2
-    #mid2 = (Lc+Ld)/2
 
     half2 = Ld / 2.
     mid2 = Lc[1:] - half2
@@ -225,7 +224,7 @@ def gauss_2d(La, Lb, Lc, Ld, K, xp, yp, a, b, H):
     y_i = [-0.577350269189626, 0.577350269189626, -0.577350269189626, 0.577350269189626]
     w_i = [1, 1, 1, 1]
   
-    gauss_point = 0
+    gauss_point = np.array([0.0])
     for j in range(len(w_i)):
          gauss_point += half1*half2*(w_i[j] * integrand_2d(half1*x_i[j] + mid1, half2*y_i[j] + mid2, K, xp, yp, a, b, H))
     return gauss_point
@@ -233,6 +232,7 @@ def gauss_2d(La, Lb, Lc, Ld, K, xp, yp, a, b, H):
 #======================================================================
 # Complete integral at one point in the spatial domain (Taylor + G-L)
 #======================================================================
+@njit
 def integration2d_point(a, b, xp, yp, B0, H):
     #------------------------------------------------------------------
     # This function will evaluate the 1d numerical integration at one 
@@ -270,7 +270,7 @@ def integration2d_point(a, b, xp, yp, B0, H):
     sup_n = linspace(eps/K, 1.0, np_n + 1)# %ncols
     dsup_n = (1 - eps/K)/np_n
     # Adaptive Gauss-Legendre
-    int1 = 0
+    int1 = 0.0
     for i in range(len(sup_m)-1):
       #for j in range(len(sup_n)-1):
         gauss_point = gauss_2d(sup_m[i], sup_m[i+1], sup_n, dsup_n, K, xp, yp, a, b, H)
@@ -287,7 +287,7 @@ def integration2d_point(a, b, xp, yp, B0, H):
 #===================================================================
 # 2d Integration over the whole spatial domain
 #===================================================================
-
+@njit
 def integration_2d(a, b, x, y,  B0, H):
     #--------------------------------------------------------------
     # This function will evaluate the 2d numerical integration at 
@@ -306,12 +306,10 @@ def integration_2d(a, b, x, y,  B0, H):
         # time_ex = execution time
     #---------------------------------------------------------------
     elevation = zeros((len(x), len(y)))
-    start_time = time.time()
     for yp in range(len(y)):
         for xp in range(len(x)):
             elevation[xp, yp] = integration2d_point(a, b, x[xp], y[yp], B0, H)
-    time_ex = start_time - time.time()
-    return elevation, time_ex
+    return elevation
 
 
 #==================================================================================
